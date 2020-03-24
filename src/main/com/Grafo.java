@@ -75,11 +75,12 @@ public class Grafo {
         System.out.println("Informe o tempo de amizade:");
         tempoAmizade = scanner.nextInt();
 
+        indice = this.retornaIndice(nome);
         indice2 = this.retornaIndice(nome2);//pega o indice do uduario 2 para recuperar sua idade e inserir na classe UsuarioSegue
         UsuarioSegue usuarioSegue = new UsuarioSegue();
         usuarioSegue.setIndiceUsuario(indice2);
         usuarioSegue.setTempo(tempoAmizade);
-        indice = this.retornaIndice(nome);
+
 
         if (indice >= 0) {
             for (int i = 0; i < this.listaAD.get(indice).size(); i++) {
@@ -104,8 +105,10 @@ public class Grafo {
             }
             if (b) {//caso nao exista uma relação b se mantem verdadeiro
                 this.listaAD.get(indice).add(usuarioSegue);//add na lista de adjacencias
+
                 this.listaAVL.get(indice).add(usuarioSegue);//add na lista de AVL
                 this.matrizDP[this.retornaIndice(nome)][this.retornaIndice(nome2)] = usuarioSegue.getTempo();//add o tempo na matriz de pesos
+                System.out.println("\nteste se inseriu nas estruturas");
             }
         } else {
             System.out.println("Ocorreu algum erro, provavelmente o usuario nao esta na lista!");
@@ -113,26 +116,42 @@ public class Grafo {
     }
 
     public void listarSeguidores(String nome) {
-        int indice, i, idade;
+        int indice, i, idade, j;
         String aux;
 
         indice=this.retornaIndice(nome);
         //exibindo da listaAD e da Matriz DP
 
         //é seguido por:
-        if(listaAD.get(indice).size()==0){
-            System.out.println("Seguidores: ");
+        System.out.println("Seguido por:");
+        for(i=0;i<listaAD.size();i++){
+            aux=listaUsuarios.get( i ).getNome();//pega o nome do usuario que esta sendo iterado
+            idade=listaUsuarios.get( i ).getIdade();//pega a idade do usuario que esta sendo iterado
+            for(j=0;j<listaAD.get(i).size();j++){
+
+
+                if(listaAD.get(i).get(j).getIndiceUsuario() == indice){//verifica se o cod do usuario buscado é seguido por outro(se sim, exibe)
+                    System.out.printf("Nome: %s, idade: %d\n", aux, idade);
+                }
+            }
+        }
+
+        //segue:
+        if(listaAD.get(indice).size()!=0){
+            System.out.println("Segue os seguintes usuarios: ");
             for(i=0;i<listaAD.get(indice).size();i++){
 
                 //pega o nome e a idade dos usuarios que seguem o usuario pedido
                 aux=listaUsuarios.get(this.listaAD.get(indice).get(i).getIndiceUsuario()).getNome();
                 idade=listaUsuarios.get(this.listaAD.get(indice).get(i).getIndiceUsuario()).getIdade();
                 System.out.printf("Nome: %s, idade: %d\n", aux, idade);
+
+                //falta fazer algoritmos de percurso
             }
         }else{
-            System.out.println("Este usuario não possui nenhum seguidor!");
+            System.out.println("Este usuario não segue ninguém!");
         }
-        //segue:
+
 
 
 
