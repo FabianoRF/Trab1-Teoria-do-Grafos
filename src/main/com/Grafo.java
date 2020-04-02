@@ -41,7 +41,6 @@ public class Grafo {
     public void inserirUsuario(Usuario usuario) {//esta funcionando!
         int i;
         boolean b = true;
-
         //Verifica se ha o usuario na lista principal, se nao existir emite uma mensagem de erro
 
         for (i = 0; i < this.listaUsuarios.size(); i++) {
@@ -152,10 +151,28 @@ public class Grafo {
             System.out.println("Este usuario não segue ninguém!");
         }
 
+    }
 
+    public void listarSeguidoresVelhos(){
+        int i,j;
+        int idadeSeguido, idadeSegue;
+        String nomeSeguido;
 
+        for(i=0;i<listaAD.size();i++){
+            for(j=0;j<listaAD.get(j).size();j++){
+                idadeSeguido=listaUsuarios.get(i).getIdade();//pega a idade do usu que esta sendo comparada agora
+                idadeSegue=listaUsuarios.get(listaAD.get(i).get(j).getIndiceUsuario()).getIdade();//armazena a idade dos usuario que seguem o que esta sendo comparado
+                nomeSeguido=listaUsuarios.get(i).getNome();//armazena o nome do usuario para possivel exibição
+
+                //verifica se o usuario possui algum seguidor mais velho que ele, se sim exibe
+                if(idadeSeguido<idadeSegue){
+                    System.out.printf("Nome: %s, idade: %d\n", nomeSeguido, idadeSeguido);
+                }
+            }
+        }
 
     }
+
 
     public void atualizarRelacao() {
 
