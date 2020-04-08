@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="edb83e6f-5280-4c8e-907b-e9c1c3e136c5" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Entrada.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Entrada.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/com/Grafo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/com/Grafo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/com/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/com/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/com/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/com/Usuario.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,11 +21,13 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/com" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Faculdade\Faculdade- 5° Periodo\Teoria dos Grafos\Trabalho Pratico 1" />
       <recent name="E:\Faculdade\Faculdade- 5° Periodo\Teoria dos Grafos\Trabalho Pratico 1\src\main\com" />
     </key>
   </component>

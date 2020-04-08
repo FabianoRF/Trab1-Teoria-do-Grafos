@@ -2,8 +2,13 @@
 Ana 20
 Lucas 21
 Roberta 28
-José 16
+Jose 16
 Maria 29
 Paulo 45
 Clara 32
 Rafa 18
+4
+Ana Lucas 5
+Roberta Lucas 3
+Maria Lucas 45
+Lucas Paulo 34

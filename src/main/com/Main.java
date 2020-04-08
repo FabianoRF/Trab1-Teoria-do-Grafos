@@ -9,16 +9,16 @@ public class Main {
         String nome;
         Grafo grafo=new Grafo();
         grafo.inicializarGrafos();
-        grafo.insereUsuariosTeste();
+        //grafo.insereUsuariosTeste();
 
-        Usuario usuario=new Usuario("Fabiano", 10);
-        Usuario usuario2=new Usuario("Maria", 10);
+        //Usuario usuario=new Usuario("Fabiano", 10);
+        //Usuario usuario2=new Usuario("Maria", 10);
 
         Scanner scanner=new Scanner(System.in);
 
 
         while(op!=0){
-            System.out.println("1 para cadastrar, 2 para inserir relação, 3 para listar seguidores, 0 para sair:");
+            System.out.println("1 para cadastrar, 2 para inserir relação, 3 para listar seguidores, 4 para ler arquivo, 0 para sair:");
             op=scanner.nextInt();
             switch(op){
                 case 1:{
@@ -33,6 +33,9 @@ public class Main {
                     nome=scanner.next();
                     grafo.listarSeguidores(nome);
                     break;
+                }
+                case 4:{
+                    grafo.leitor();
                 }
             }
         }
