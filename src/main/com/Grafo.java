@@ -2,6 +2,10 @@ package main.com;
 
 //classe que contem as tres estruturas e os metodos principais do trabalho
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TreeSet;
@@ -12,6 +16,48 @@ public class Grafo {
     public int[][] matrizDP;
     public ArrayList<ArrayList<UsuarioSegue>> listaAD;
     public ArrayList<TreeSet<UsuarioSegue>> listaAVL;
+
+    //    leitor de txt com os ususarios e suas idades
+    public void leitor(){
+        String nomeArq = "Entrada.txt";
+        int n;
+
+        try {
+            FileReader arq = new FileReader(nomeArq);
+            BufferedReader lerArq = new BufferedReader(arq);
+
+
+            String linha= lerArq.readLine();//Le a primeira linha para saber o numero d ususarios do arquivo
+            n=Integer.parseInt(linha);
+
+            String[] nomeIdade;//vetor de string que sera utilizado para o split que separará o nome da idade
+
+            Usuario usuario = new Usuario();
+
+            for (int i=0; i<n ; i++){
+
+                linha=lerArq.readLine();
+                nomeIdade=linha.split(" ");//separa o nome da idade
+                usuario.setNome(nomeIdade[0]);
+                usuario.setIdade(Integer.parseInt(nomeIdade[1]));
+                this.inserirUsuario(usuario);
+            }
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("Erro na leitura do arquivo!");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erro na leitura do arquivo!");
+        }
+
+    }
+
+
+
+
+
 
     //metodos utilizados para teste
     public void insereUsuariosTeste() {
@@ -178,7 +224,26 @@ public class Grafo {
 
     }
 
-    public void removerUsuario() {
+    public void removerUsuario(String nome) {
+        int indice=this.retornaIndice(nome);
+
+        if(this.verificaExistencia(nome)){
+            //excluindo das estruturas
+            this.listaUsuarios.remove(indice);//remove lista principal
+            this.listaAD.remove(indice);//remove lista ad junto com os seguidores
+            this.listaAVL.remove(indice);//remove listaAVL junto com a arvore de seguidores
+
+            for(int i=0;i<50;i++){
+                for(int j=0;j<50;j++){
+                    if(i==indice){
+                        matrizDP[i][indice]=-1;//Como a matriz não é dinamica a estrategia de utilizar o -1 é para diferenciar
+                    }
+                }
+            }
+
+        }else{
+            System.out.println("\nERRO! O usuario não existe!\n");
+        }
 
     }
 
@@ -186,7 +251,7 @@ public class Grafo {
 
     }
 
-    public int retornaIndice(String nome) {//Função que retorna o indice do uisuario OBS: caso não ache ele retorna -1
+    public int retornaIndice(String nome) {//Metodo que retorna o indice do uisuario OBS: caso não ache ele retorna -1
         int i, indice = -1;
         for (i = 0; i < this.listaUsuarios.size(); i++) {
             if (nome.equals(this.listaUsuarios.get(i).getNome())) {
@@ -194,6 +259,16 @@ public class Grafo {
             }
         }
         return indice;
+    }
+
+    public boolean verificaExistencia(String nome){//Metodo que retorna se o o nome está na lista
+
+        for(int i=0;i<listaUsuarios.size();i++){
+            if(listaUsuarios.get(i).getNome().equals(nome)){
+                return true;
+            }
+        }
+        return false;
     }
 
 

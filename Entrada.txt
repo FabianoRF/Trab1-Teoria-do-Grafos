@@ -1,0 +1,9 @@
+8
+Ana 20
+Lucas 21
+Roberta 28
+José 16
+Maria 29
+Paulo 45
+Clara 32
+Rafa 18
