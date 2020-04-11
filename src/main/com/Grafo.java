@@ -105,7 +105,8 @@ public class Grafo {
         int tempoAmizade;
         int indice, indice2;//representam os indices Usuarios da relação
         boolean b = true;
-
+        UsuarioSegue usuarioSegue = new UsuarioSegue();
+        UsuarioSegue usuarioAuxAvl= new UsuarioSegue();
 
         System.out.println("Digite o usuario 1:");
         String nome = scanner.next();
@@ -116,10 +117,9 @@ public class Grafo {
 
         indice = this.retornaIndice(nome);
         indice2 = this.retornaIndice(nome2);//pega o indice do uduario 2 para recuperar sua idade e inserir na classe UsuarioSegue
-        UsuarioSegue usuarioSegue = new UsuarioSegue();
+
         usuarioSegue.setIndiceUsuario(indice2);
         usuarioSegue.setTempo(tempoAmizade);
-
 
         if (indice >= 0) {//ou seja se o indice existe
             for (int i = 0; i < this.listaAD.get(indice).size(); i++) {
@@ -129,13 +129,16 @@ public class Grafo {
                     String resposta = scanner.next();
 
                     if (resposta.equals("s")) {
+                        this.listaAVL.get(indice).remove(usuarioSegue);//remove da avl antes de atualizar para depois add dnv o atualizado
                         System.out.println("Informe o novo tempo de amizade: ");
-                        usuarioSegue.setTempo(scanner.nextInt());
+                        usuarioSegue.setTempo(scanner.nextInt());//le o novo tempo de amizade
+
                         b = false;
                         //Agora vamos inserir nas listas
-                        this.listaAD.get(indice).add(usuarioSegue);//add na lista de adjacencias
-                        this.listaAVL.get(indice).add(usuarioSegue);//add na lista de AVL
-                        this.matrizDP[this.retornaIndice(nome)][this.retornaIndice(nome2)] = usuarioSegue.getTempo();//add o tempo na matriz de pesos
+                        this.listaAD.get(indice).get(i).setTempo(usuarioSegue.getTempo());//atualiza na lista de adjacencias
+                        this.matrizDP[this.retornaIndice(nome)][this.retornaIndice(nome2)] = usuarioSegue.getTempo();//atualiza o tempo na matriz de pesos
+                        this.listaAVL.get(indice).add(usuarioSegue);//adiciona agora depois de atualizado
+
                     } else {
                         System.out.println("Relação não alterada!");
                     }
@@ -232,22 +235,43 @@ public class Grafo {
     }
 
     public void listarSeguidoresVelhos(){
-        int i,j;
-        int idadeSeguido, idadeSegue;
-        String nomeSeguido;
+        int i,j,k;
+        int idadeSeguido, idadeSegue, idadeAux, tempoAmizade;
+        String nomeSeguido, nomeAux, nomeSegue;
+        boolean b;//utilizado para verificar se o usuario possui ou nao seguidores
 
         for(i=0;i<listaAD.size();i++){
-            for(j=0;j<listaAD.get(j).size();j++){
-                idadeSeguido=listaUsuarios.get(i).getIdade();//pega a idade do usu que esta sendo comparada agora
-                idadeSegue=listaUsuarios.get(listaAD.get(i).get(j).getIndiceUsuario()).getIdade();//armazena a idade dos usuario que seguem o que esta sendo comparado
-                nomeSeguido=listaUsuarios.get(i).getNome();//armazena o nome do usuario para possivel exibição
+            b=true;//adimite que não pssui seguidores mais velhos
+            idadeSeguido=listaUsuarios.get(i).getIdade();//pega a idade do usuario que esta sendo comparada agora
+            nomeSeguido=listaUsuarios.get(i).getNome();//pega o nome do usuario que esta sendo comparada agora
+            System.out.printf("\nO usuario %s: \n", nomeSeguido);
 
-                //verifica se o usuario possui algum seguidor mais velho que ele, se sim exibe
-                if(idadeSeguido<idadeSegue){
-                    System.out.printf("Nome: %s, idade: %d\n", nomeSeguido, idadeSeguido);
+            for(j=0;j<listaAD.size();j++){
+
+                if(i!=j){//não verifica os seguidores do mesmo usuario
+                    idadeSegue=listaUsuarios.get(j).getIdade();//armazena a idade do usuario que sera comparado
+                    nomeSegue=listaUsuarios.get(j).getNome();//armazena o nome do usuario que sera comparado
+
+                    if(idadeSeguido<idadeSegue){//caso o usuario Y seja mais velho que o X, procura se o Y segue X para exibi-lo
+
+                        for(k=0;k<listaAD.get(j).size();k++){
+                            nomeAux=listaUsuarios.get(listaAD.get(j).get(k).getIndiceUsuario()).getNome();//armazena o nome do usuario que sera comparado
+                            idadeAux=listaUsuarios.get(listaAD.get(j).get(k).getIndiceUsuario()).getIdade();//armazena o nome do usuario que sera comparado
+                            tempoAmizade=listaAD.get(j).get(k).getTempo();//armazena o tempo de amizade
+
+                            if(nomeAux.equals(nomeSeguido)){//se for verdade aqui pode se dizer que um usuario mais velho segue o usuario em questão, portanto exibe
+                                System.out.printf("É seguido por %s de idade %d por %d meses!\n", nomeSegue, idadeAux, tempoAmizade);//exibe o usuario que possui seguidro mais velho, o nome do seguidor mais velho e seu quantitativo
+                                b=false;//admite que ele possui seguidor mais velho
+                            }
+                        }
+                    }
                 }
             }
+            if(b){
+                System.out.println("Não possui nenhum seguidor mais velho!\n");
+            }
         }
+
 
     }
 
@@ -303,5 +327,16 @@ public class Grafo {
         return false;
     }
 
+    public void atualizaTempoAvl(int indice){
+        Iterator<UsuarioSegue> iterator=this.listaAVL.get(indice).iterator();//cria um iterator que recebe a AVL do usuario em questao
+
+        while (iterator.hasNext()){
+            if(iterator.next().getIndiceUsuario()==indice){
+
+            }
+
+        }
+
+    }
 
 }

@@ -14,7 +14,7 @@ public class Main {
 
 
         while(op!=0){
-            System.out.println("1 para cadastrar, 2 para inserir relação, 3 para listar seguidores, 4 para ler arquivo, 0 para sair:");
+            System.out.println("1 para cadastrar, 2 para inserir relação, 3 para listar seguidores, 4 para ler arquivo,\n 5 listar velhos, 0 para sair:");
             op=scanner.nextInt();
             switch(op){
                 case 1:{
@@ -32,6 +32,15 @@ public class Main {
                 }
                 case 4:{
                     grafo.leitor();
+                    break;
+                }
+                case 5:{
+                    grafo.listarSeguidoresVelhos();
+                    break;
+                }
+                default:{
+                    System.out.println("Opção inválida! Digite novamente...");
+                    break;
                 }
             }
         }
