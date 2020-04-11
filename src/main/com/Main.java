@@ -9,6 +9,7 @@ public class Main {
         String nome;
         Grafo grafo=new Grafo();
         grafo.inicializarGrafos();
+        grafo.leitor();
 
         Scanner scanner=new Scanner(System.in);
 
@@ -36,6 +37,16 @@ public class Main {
                 }
                 case 5:{
                     grafo.listarSeguidoresVelhos();
+                    break;
+                }
+                case 6:{
+                    grafo.exibeUsuarios();
+                    break;
+                }
+                case 7:{
+                    System.out.println("Digite o nome do usuario:");
+                    nome=scanner.next();
+                    grafo.removerUsuario(nome);
                     break;
                 }
                 default:{

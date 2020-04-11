@@ -100,7 +100,6 @@ public class Grafo {
             }
             if (b) {//caso nao exista uma relação b se mantem verdadeiro
                 this.listaAD.get(indice).add(usuarioSegue);//add na lista de adjacencias
-
                 this.listaAVL.get(indice).add(usuarioSegue);//add na lista de AVL
                 this.matrizDP[this.retornaIndice(nome)][this.retornaIndice(nome2)] = usuarioSegue.getTempo();//add o tempo na matriz de pesos
                 System.out.println("\nteste se inseriu nas estruturas");
@@ -326,6 +325,32 @@ public class Grafo {
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Erro na leitura do arquivo!");
+        }
+    }
+
+    public void exibeUsuarios(){//exibe todas estruturas
+
+        System.out.println("Exibindo lista principal: \n");
+        for(int i=0;i<listaUsuarios.size();i++){
+            System.out.println(listaUsuarios.get(i).toString());
+        }
+
+        System.out.println("Exibindo lista AD: \n");
+        for(int i=0;i<listaAD.size();i++){
+            System.out.printf("%d\t", i);
+            for(int j=0;j<listaAD.get(i).size();j++){
+                System.out.printf("%d\t", listaAD.get(i).get(j).getIndiceUsuario());
+            }
+            System.out.println();
+        }
+
+        System.out.println("Exibindo matriz: \n");
+        for(int i=0;i<50;i++){
+            System.out.printf("%d\t", i);
+            for(int j=0;j<50;j++){
+                System.out.printf("%d\t", matrizDP[i][j]);
+            }
+            System.out.println();
         }
     }
 
