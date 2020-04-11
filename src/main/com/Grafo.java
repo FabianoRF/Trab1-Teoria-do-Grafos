@@ -18,54 +18,7 @@ public class Grafo {
     public ArrayList<ArrayList<UsuarioSegue>> listaAD;
     public ArrayList<TreeSet<UsuarioSegue>> listaAVL;
 
-    //leitor de txt para ler usuarios e  caso necessario, as relações
-    public void leitor(){
-        String nomeArq = "Entrada.txt";
-        int n;
-        try {
-            FileReader arq = new FileReader(nomeArq);
-            BufferedReader lerArq = new BufferedReader(arq);
 
-            String linha= lerArq.readLine();//Le a primeira linha para saber o numero de usuarios do arquivo
-            n=Integer.parseInt(linha);//converte para inteiro
-
-            String[] nomeIdade;//vetor de string que sera utilizado para o split que separará o nome da idade
-            String nome;
-            int idade;
-            //INICIO DA LEITURA DOS USUARIOS
-            for (int i=0; i<n ; i++){
-                linha=lerArq.readLine();
-                nomeIdade=linha.split(" ");//separa o nome da idade
-                nome=nomeIdade[0];
-                idade=Integer.parseInt(nomeIdade[1]);
-                this.inserirUsuario(new Usuario(nome, idade));//insere o usuario na rspectiva linha
-            }
-            //FIM LEITURA USUARIOS
-
-            //INICIO LEITURA RELAÇÕES
-            linha= lerArq.readLine();//Le a primeira linha para saber o numero de relações do arquivo
-
-            if(linha!=(null)){//se esta linha conter algum numero significa que haverá inserção de relações
-                n=Integer.parseInt(linha);//converte para inteiro
-                String[] auxRelacao;
-                for(int i=0;i<n;i++){
-                    linha=lerArq.readLine();
-                    auxRelacao=linha.split(" ");//faz o split para separar o usuario x, y e o tempo de amizade
-
-                    this.inserirRelacao(auxRelacao);
-                }
-            }else {
-                System.out.println("O arquivo não possui relações");
-            }
-            //FIM RELAÇÕES
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("Erro na leitura do arquivo!");
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Erro na leitura do arquivo!");
-        }
-    }
 
     //metodos pedidos no problema
     public void inicializarGrafos() {
@@ -327,16 +280,53 @@ public class Grafo {
         return false;
     }
 
-    public void atualizaTempoAvl(int indice){
-        Iterator<UsuarioSegue> iterator=this.listaAVL.get(indice).iterator();//cria um iterator que recebe a AVL do usuario em questao
+    //leitor de txt para ler usuarios e  caso necessario, as relações
+    public void leitor(){
+        String nomeArq = "Entrada.txt";
+        int n;
+        try {
+            FileReader arq = new FileReader(nomeArq);
+            BufferedReader lerArq = new BufferedReader(arq);
 
-        while (iterator.hasNext()){
-            if(iterator.next().getIndiceUsuario()==indice){
+            String linha= lerArq.readLine();//Le a primeira linha para saber o numero de usuarios do arquivo
+            n=Integer.parseInt(linha);//converte para inteiro
 
+            String[] nomeIdade;//vetor de string que sera utilizado para o split que separará o nome da idade
+            String nome;
+            int idade;
+            //INICIO DA LEITURA DOS USUARIOS
+            for (int i=0; i<n ; i++){
+                linha=lerArq.readLine();
+                nomeIdade=linha.split(" ");//separa o nome da idade
+                nome=nomeIdade[0];
+                idade=Integer.parseInt(nomeIdade[1]);
+                this.inserirUsuario(new Usuario(nome, idade));//insere o usuario na rspectiva linha
             }
+            //FIM LEITURA USUARIOS
 
+            //INICIO LEITURA RELAÇÕES
+            linha= lerArq.readLine();//Le a primeira linha para saber o numero de relações do arquivo
+
+            if(linha!=(null)){//se esta linha conter algum numero significa que haverá inserção de relações
+                n=Integer.parseInt(linha);//converte para inteiro
+                String[] auxRelacao;
+                for(int i=0;i<n;i++){
+                    linha=lerArq.readLine();
+                    auxRelacao=linha.split(" ");//faz o split para separar o usuario x, y e o tempo de amizade
+
+                    this.inserirRelacao(auxRelacao);
+                }
+            }else {
+                System.out.println("O arquivo não possui relações");
+            }
+            //FIM RELAÇÕES
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("Erro na leitura do arquivo!");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erro na leitura do arquivo!");
         }
-
     }
 
 }
