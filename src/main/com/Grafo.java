@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.TreeSet;
 
@@ -17,11 +18,10 @@ public class Grafo {
     public ArrayList<ArrayList<UsuarioSegue>> listaAD;
     public ArrayList<TreeSet<UsuarioSegue>> listaAVL;
 
-    //leitor de txt para ler usuarios e relações, caso necessario
+    //leitor de txt para ler usuarios e  caso necessario, as relações
     public void leitor(){
         String nomeArq = "Entrada.txt";
         int n;
-
         try {
             FileReader arq = new FileReader(nomeArq);
             BufferedReader lerArq = new BufferedReader(arq);
@@ -55,13 +55,9 @@ public class Grafo {
                     this.inserirRelacao(auxRelacao);
                 }
             }else {
-                System.out.println("O arquivo não ppossui relações");
+                System.out.println("O arquivo não possui relações");
             }
-
-
             //FIM RELAÇÕES
-
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("Erro na leitura do arquivo!");
@@ -69,21 +65,7 @@ public class Grafo {
             e.printStackTrace();
             System.out.println("Erro na leitura do arquivo!");
         }
-
     }
-
-
-    //metodos utilizados para teste
-    public void insereUsuariosTeste() {
-
-        this.inserirUsuario(new Usuario("a", 12));
-        this.inserirUsuario(new Usuario("b", 13));
-        this.inserirUsuario(new Usuario("c", 14));
-        this.inserirUsuario(new Usuario("d", 15));
-        this.inserirUsuario(new Usuario("e", 16));
-        this.inserirUsuario(new Usuario("f", 17));
-    }
-
 
     //metodos pedidos no problema
     public void inicializarGrafos() {
@@ -95,10 +77,9 @@ public class Grafo {
         this.listaAD = new ArrayList<>();
         //AVL
         this.listaAVL = new ArrayList<>();
-
     }
 
-    public void inserirUsuario(Usuario usuario) {//esta funcionando!
+    public void inserirUsuario(Usuario usuario) {//pronto
         int i;
         boolean b = true;
 
@@ -119,7 +100,7 @@ public class Grafo {
         }
     }
 
-    public void inserirRelacao() {
+    public void inserirRelacao() {//pronto
         Scanner scanner = new Scanner(System.in);
         int tempoAmizade;
         int indice, indice2;//representam os indices Usuarios da relação
@@ -174,7 +155,7 @@ public class Grafo {
     }
 
     //versão da inserir relação utilizada pelo leitor de arquivo que recebe como parametro um vetor de string com usuario x, y e tempo de amizade(obs: não atualiza se ja houver)
-    public void inserirRelacao(String[] auxRelacao) {
+    public void inserirRelacao(String[] auxRelacao) {//pronto
         int indice, indice2;//representam os indices Usuarios da relação
         boolean b = true;
 
@@ -195,9 +176,17 @@ public class Grafo {
         }
     }
 
+
+    /**
+     * Dado que este trabalho esta sendo desenvolvido Utilizando a Coleção treeset para a estrutura de lista AVL,
+     * não foi possivel implementar os algoritimos de percurso pre-ordem e pós-ordem, apenas o in-ordem,
+     * por se tratar de um recurso nativo da linguagem.
+     */
+
     public void listarSeguidores(String nome) {
         int indice, i, idade, j;
-        String aux;
+        String auxNome;
+        Usuario usuarioAux;
 
         indice=this.retornaIndice(nome);
         //exibindo da listaAD e da Matriz DP
@@ -205,33 +194,41 @@ public class Grafo {
         //é seguido por:
         System.out.println("Seguido por:");
         for(i=0;i<listaAD.size();i++){
-            aux=listaUsuarios.get( i ).getNome();//pega o nome do usuario que esta sendo iterado
+            auxNome=listaUsuarios.get( i ).getNome();//pega o nome do usuario que esta sendo iterado
             idade=listaUsuarios.get( i ).getIdade();//pega a idade do usuario que esta sendo iterado
             for(j=0;j<listaAD.get(i).size();j++){
 
 
                 if(listaAD.get(i).get(j).getIndiceUsuario() == indice){//verifica se o cod do usuario buscado é seguido por outro(se sim, exibe)
-                    System.out.printf("Nome: %s, idade: %d\n", aux, idade);
+                    System.out.printf("Nome: %s, idade: %d\n", auxNome, idade);
                 }
             }
         }
 
         //segue:
-        if(listaAD.get(indice).size()!=0){
-            System.out.println("Segue os seguintes usuarios: ");
+        if(listaAD.get(indice).size()!=0){//confere se possui seguidores
+            System.out.printf("\nO usuario %s, segue os seguintes usuarios: ", nome);
+            System.out.println("\n*** Exibindo da Lista de Adjacencias e Matriz de Pesos ***\n");
             for(i=0;i<listaAD.get(indice).size();i++){
-
                 //pega o nome e a idade dos usuarios que seguem o usuario pedido
-                aux=listaUsuarios.get(this.listaAD.get(indice).get(i).getIndiceUsuario()).getNome();
+                auxNome=listaUsuarios.get(this.listaAD.get(indice).get(i).getIndiceUsuario()).getNome();
                 idade=listaUsuarios.get(this.listaAD.get(indice).get(i).getIndiceUsuario()).getIdade();
-                System.out.printf("Nome: %s, idade: %d\n", aux, idade);
-
-                //falta fazer algoritmos de percurso
+                System.out.printf("Nome: %s, idade: %d\n", auxNome, idade);
             }
+
+            //exibição da arvore avl
+            System.out.println("\n*** Exibindo da Lista de AVL in-ordem ***\n");
+            Iterator<UsuarioSegue> iterator=listaAVL.get(indice).iterator();//cria um iterator que recebe a AVL do usuario em questao
+
+            while(iterator.hasNext()){
+                indice=iterator.next().getIndiceUsuario();//pega o indice do usuario dentro da AVL
+                usuarioAux=this.listaUsuarios.get(indice);//pega o usuario que possui aquele indice para depois exibi-lo
+                System.out.printf("Nome: %s, idade: %d\n", usuarioAux.getNome(), usuarioAux.getIdade());
+            }
+
         }else{
             System.out.println("Este usuario não segue ninguém!");
         }
-
     }
 
     public void listarSeguidoresVelhos(){

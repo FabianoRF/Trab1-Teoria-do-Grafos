@@ -9,10 +9,6 @@ public class Main {
         String nome;
         Grafo grafo=new Grafo();
         grafo.inicializarGrafos();
-        //grafo.insereUsuariosTeste();
-
-        //Usuario usuario=new Usuario("Fabiano", 10);
-        //Usuario usuario2=new Usuario("Maria", 10);
 
         Scanner scanner=new Scanner(System.in);
 
@@ -39,9 +35,5 @@ public class Main {
                 }
             }
         }
-
-
-
-
     }
 }

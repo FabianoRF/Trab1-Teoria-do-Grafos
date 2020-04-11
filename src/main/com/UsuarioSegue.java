@@ -25,6 +25,6 @@ public class UsuarioSegue implements Comparable<UsuarioSegue>{//interface que di
 
     @Override
     public int compareTo(UsuarioSegue o) {
-        return o.getIndiceUsuario();
+        return this.indiceUsuario - o.indiceUsuario;//exibe in-ordem
     }
 }
