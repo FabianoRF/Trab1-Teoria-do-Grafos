@@ -274,8 +274,7 @@ public class Grafo {
     public void removerRelacao(String nome, String nome2, boolean b) {
         int i ;
         Scanner scanner=new Scanner(System.in);
-        int indice = this.retornaIndice(nome);
-        int indice2 = this.retornaIndice(nome2);
+
 
         if(b){//caso b seja verdadeiro se faz a leitura, caso falso é porque já possuem nomes no parametro
             //LEITURA DO USUARIO
@@ -284,6 +283,9 @@ public class Grafo {
             System.out.println("Digite o usuario 2:");
             nome2 = scanner.next();
         }
+
+        int indice = this.retornaIndice(nome);
+        int indice2 = this.retornaIndice(nome2);
 
         if(this.verificaExistencia(nome) && this.verificaExistencia(nome2)){
             //é seguidor de
