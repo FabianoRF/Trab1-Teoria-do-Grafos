@@ -6,6 +6,13 @@ public class UsuarioSegue implements Comparable<UsuarioSegue>{//interface que di
     private int indiceUsuario;
     private int tempo;
 
+    public UsuarioSegue() {
+    }
+
+    public UsuarioSegue(int indiceUsuario, int tempo) {
+        this.indiceUsuario = indiceUsuario;
+        this.tempo = tempo;
+    }
 
     public int getIndiceUsuario() {
         return indiceUsuario;

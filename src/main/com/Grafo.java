@@ -59,7 +59,6 @@ public class Grafo {
         int indice, indice2;//representam os indices Usuarios da relação
         boolean b = true;
         UsuarioSegue usuarioSegue = new UsuarioSegue();
-        UsuarioSegue usuarioAuxAvl= new UsuarioSegue();
 
         System.out.println("Digite o usuario 1:");
         String nome = scanner.next();
@@ -98,10 +97,17 @@ public class Grafo {
                     break;
                 }
             }
+
             if (b) {//caso nao exista uma relação b se mantem verdadeiro
-                this.listaAD.get(indice).add(usuarioSegue);//add na lista de adjacencias
-                this.listaAVL.get(indice).add(usuarioSegue);//add na lista de AVL
-                this.matrizDP[this.retornaIndice(nome)][this.retornaIndice(nome2)] = usuarioSegue.getTempo();//add o tempo na matriz de pesos
+                this.listaAD.get(indice).add(usuarioSegue);//add na lista de adjacencias(é seguidor de)
+                this.listaAVL.get(indice).add(usuarioSegue);//add na lista de AVL(é seguidor de)
+                this.matrizDP[this.retornaIndice(nome)][this.retornaIndice(nome2)] = usuarioSegue.getTempo();//add o tempo na matriz de pesos (é seguidor de)
+
+                usuarioSegue.setIndiceUsuario(indice);
+
+                this.listaAD.get(indice2).add(usuarioSegue);//add na lista de adjacencias (seguido por)
+                this.listaAVL.get(indice2).add(usuarioSegue);//add na lista de AVL (seguido por)
+                this.matrizDP[this.retornaIndice(nome2)][this.retornaIndice(nome)] = usuarioSegue.getTempo();//add o tempo na matriz de pesos (seguido por)
                 System.out.println("\nteste se inseriu nas estruturas");
             }
         } else {
@@ -111,19 +117,23 @@ public class Grafo {
 
     //versão da inserir relação utilizada pelo leitor de arquivo que recebe como parametro um vetor de string com usuario x, y e tempo de amizade(obs: não atualiza se ja houver)
     public void inserirRelacao(String[] auxRelacao) {//pronto
-        int indice, indice2;//representam os indices Usuarios da relação
+        int indice, indice2, tempoAmizade;//representam os indices Usuarios da relação e tempo de amizade
         boolean b = true;
 
         indice = this.retornaIndice(auxRelacao[0]);
         indice2 = this.retornaIndice(auxRelacao[1]);//pega o indice do uduario 2 para recuperar sua idade e inserir na classe UsuarioSegue
-        UsuarioSegue usuarioSegue = new UsuarioSegue();
-        usuarioSegue.setIndiceUsuario(indice2);
-        usuarioSegue.setTempo(Integer.parseInt(auxRelacao[2]));
+        tempoAmizade=Integer.parseInt(auxRelacao[2]);
 
-        if (indice >= 0) {//ou seja se o indice existe
-            this.listaAD.get(indice).add(usuarioSegue);//add na lista de adjacencias
-            this.listaAVL.get(indice).add(usuarioSegue);//add na lista de AVL
-            this.matrizDP[this.retornaIndice(auxRelacao[0])][this.retornaIndice(auxRelacao[1])] = usuarioSegue.getTempo();//add o tempo na matriz de pesos
+
+        if (indice >= 0 && indice2 >= 0) {//verifica se os usuarios existem
+            //é seguidor de
+            this.listaAD.get(indice).add(new UsuarioSegue(indice2, tempoAmizade));//add na lista de adjacencias(é seguidor de)
+            this.listaAVL.get(indice).add(new UsuarioSegue(indice2, tempoAmizade));//add na lista de AVL(é seguidor de)
+            this.matrizDP[indice][indice2] = tempoAmizade;//add o tempo na matriz de pesos (é seguidor de)
+            //seguido por
+            this.listaAVL.get(indice2).add(new UsuarioSegue(indice, tempoAmizade));//add na lista de AVL (seguido por)
+            this.listaAD.get(indice2).add(new UsuarioSegue(indice, tempoAmizade));//add na lista de adjacencias (seguido por)
+            this.matrizDP[indice2][indice] = tempoAmizade;//add o tempo na matriz de pesos (seguido por)
             //System.out.println("\nteste se inseriu nas estruturas");
 
         } else {
@@ -306,7 +316,7 @@ public class Grafo {
             //INICIO LEITURA RELAÇÕES
             linha= lerArq.readLine();//Le a primeira linha para saber o numero de relações do arquivo
 
-            if(linha!=(null)){//se esta linha conter algum numero significa que haverá inserção de relações
+            if(!linha.equals("")){//se esta linha conter algum numero significa que haverá inserção de relações
                 n=Integer.parseInt(linha);//converte para inteiro
                 String[] auxRelacao;
                 for(int i=0;i<n;i++){
@@ -339,7 +349,7 @@ public class Grafo {
         for(int i=0;i<listaAD.size();i++){
             System.out.printf("%d\t", i);
             for(int j=0;j<listaAD.get(i).size();j++){
-                System.out.printf("%d\t", listaAD.get(i).get(j).getIndiceUsuario());
+                System.out.printf("[%d, %d]\t", listaAD.get(i).get(j).getIndiceUsuario(), listaAD.get(i).get(j).getTempo());
             }
             System.out.println();
         }

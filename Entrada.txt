@@ -1,22 +1,8 @@
-8
+3
 Ana 20
 Lucas 21
 Roberta 28
-Jose 16
-Maria 29
-Paulo 45
-Clara 32
-Rafa 18
-12
+3
 Ana Lucas 5
 Roberta Lucas 3
-Maria Lucas 45
-Lucas Paulo 34
-Clara Paulo 43
-Jose Paulo 3
-Maria Paulo 7
-Paulo Jose 46
-Paulo Lucas 46
-Paulo Maria 46
-Paulo Rafa 46
-Paulo Roberta 46
+Ana Roberta 45

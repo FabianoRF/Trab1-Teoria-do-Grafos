@@ -15,7 +15,8 @@ public class Main {
 
 
         while(op!=0){
-            System.out.println("1 para cadastrar, 2 para inserir relação, 3 para listar seguidores, 4 para ler arquivo,\n 5 listar velhos, 0 para sair:");
+            System.out.println("1 para cadastrar, 2 para inserir relação, 3 para listar seguidores, 4 para ler arquivo,\n 5 listar velhos, 6 para exibir geral" +
+                    "7 remover, 0 para sair:");
             op=scanner.nextInt();
             switch(op){
                 case 1:{
