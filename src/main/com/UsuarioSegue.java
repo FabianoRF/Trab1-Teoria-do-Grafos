@@ -34,4 +34,12 @@ public class UsuarioSegue implements Comparable<UsuarioSegue>{//interface que di
     public int compareTo(UsuarioSegue o) {
         return this.indiceUsuario - o.indiceUsuario;//exibe in-ordem
     }
+
+    @Override
+    public String toString() {
+        return "UsuarioSegue{" +
+                "indiceUsuario=" + indiceUsuario +
+                ", tempo=" + tempo +
+                '}';
+    }
 }

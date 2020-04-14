@@ -67,7 +67,11 @@ public class Grafo {
                     String resposta = scanner.next();
 
                     if (resposta.equals("s")) {//NESSE MOMENTO CHAMAR O METODO DE ATUALIZAR
+
                         this.listaAVL.get(indice).remove(usuarioSegue);//remove da avl antes de atualizar para depois add dnv o atualizado
+
+
+
                         System.out.println("Informe o novo tempo de amizade: ");
                         usuarioSegue.setTempo(scanner.nextInt());//le o novo tempo de amizade
 
@@ -225,8 +229,61 @@ public class Grafo {
     }
 
 
-    public void atualizarRelacao() {
+    public void atualizarRelacao(String nome, String nome2, int tempoAmizade, boolean b) {
 
+        Scanner scanner = new Scanner(System.in);
+        int indice, indice2;//representam os indices Usuarios da relação e tempo de amizade
+        UsuarioSegue usuarioSegue = new UsuarioSegue();
+        this.exibeUsuarios();//lista os usuarios
+
+        if(b){
+            //LEITURA DO USUARIO
+            System.out.println("Digite o usuario 1:");
+            nome = scanner.next();
+            System.out.println("Digite o usuario 2:");
+            nome2 = scanner.next();
+            System.out.println("Informe o novo tempo de amizade: ");
+            tempoAmizade = scanner.nextInt();
+        }
+
+        indice = this.retornaIndice(nome);
+        indice2 = this.retornaIndice(nome2);//pega o indice do uduario 2 para recuperar sua idade e inserir na classe UsuarioSegue
+
+        if (indice >= 0 && indice2 >=0) {//ou seja se o indice existe
+
+            for (int i = 0; i < this.listaAD.get(indice).size(); i++) {
+                if (this.listaAD.get(indice).get(i).getIndiceUsuario() == indice2) {//Comparando se já existe uma relação
+                    //atualiza na listaad e na matrizDp
+                    this.listaAD.get(indice).get(i).setTempo(tempoAmizade);//atualiza na lista de adjacencias
+                    this.matrizDP[indice][indice2] = tempoAmizade;//atualiza o tempo na matriz de pesos
+                    break;
+                }
+            }
+            for (int i = 0; i < this.listaAD.get(indice2).size(); i++) {
+                if (this.listaAD.get(indice2).get(i).getIndiceUsuario() == indice) {//Comparando se já existe uma relação
+                    //atualiza na listaad e na matrizDp
+                    this.listaAD.get(indice2).get(i).setTempo(tempoAmizade);//atualiza na lista de adjacencias
+                    this.matrizDP[indice2][indice] = tempoAmizade;//atualiza o tempo na matriz de pesos
+                    break;
+                }
+            }
+            //Atualizando na AVL
+            Iterator<UsuarioSegue> iterator=this.listaAVL.get(indice).iterator();
+            while(iterator.hasNext()){
+                UsuarioSegue aux=iterator.next();
+                if(aux.getIndiceUsuario()==indice2){//remove a posição do indice
+                    aux.setTempo(tempoAmizade);
+                }
+            }
+            iterator=this.listaAVL.get(indice2).iterator();
+            while(iterator.hasNext()){
+                UsuarioSegue aux=iterator.next();
+                if(aux.getIndiceUsuario()==indice){//remove a posição do indice
+                    aux.setTempo(tempoAmizade);
+                }
+            }
+
+        }
     }
 
     public void removerUsuario(String nome) {//
@@ -407,7 +464,7 @@ public class Grafo {
 
         System.out.println("Exibindo lista AD: \n");
         for(int i=0;i<listaAD.size();i++){
-            System.out.printf("%d\t", i);
+            System.out.printf("%d: \t", i);
             for(int j=0;j<listaAD.get(i).size();j++){
                 System.out.printf("[%d, %d]\t", listaAD.get(i).get(j).getIndiceUsuario(), listaAD.get(i).get(j).getTempo());
             }
@@ -416,11 +473,22 @@ public class Grafo {
 
         System.out.println("Exibindo matriz: \n");
         for(int i=0;i<50;i++){
-            System.out.printf("%d\t", i);
+            System.out.printf("%d: \t", i);
             for(int j=0;j<50;j++){
                 System.out.printf("%d\t", matrizDP[i][j]);
             }
             System.out.println();
+        }
+
+        Iterator<UsuarioSegue> iterator;
+        System.out.println("Exibindo AVL");
+        for(int i=0;i<listaAVL.size();i++){
+            iterator=this.listaAVL.get(i).iterator();
+            System.out.printf("%d: \n", i);
+            while(iterator.hasNext()){
+                UsuarioSegue aux=iterator.next();
+                System.out.println(aux.toString() + "\n");
+            }
         }
     }
 

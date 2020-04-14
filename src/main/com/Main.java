@@ -16,7 +16,7 @@ public class Main {
 
         while(op!=0){
             System.out.println("1 para cadastrar, 2 para inserir relação, 3 para listar seguidores, 4 para ler arquivo,\n 5 listar velhos, 6 para exibir geral" +
-                    "7 remover usuario, 8 para remover relação, 0 para sair:");
+                    "7 remover usuario, 8 para remover relação, 9 atualiza relação, 0 para sair:");
             op=scanner.nextInt();
             switch(op){
                 case 1:{
@@ -52,6 +52,9 @@ public class Main {
                 } case 8:{
                     grafo.removerRelacao("", "", true);
                     break;
+                }
+                case 9:{
+                    grafo.atualizarRelacao("", "", 0, true);
                 }
                 default:{
                     System.out.println("Opção inválida! Digite novamente...");
