@@ -41,7 +41,7 @@ public class Main {
                     break;
                 }
                 case 6:{
-                    grafo.exibeUsuarios();
+                    grafo.exibeEstruturas();
                     break;
                 }
                 case 7:{
