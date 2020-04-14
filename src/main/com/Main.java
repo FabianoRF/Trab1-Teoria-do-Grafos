@@ -16,7 +16,7 @@ public class Main {
 
         while(op!=0){
             System.out.println("1 para cadastrar, 2 para inserir relação, 3 para listar seguidores, 4 para ler arquivo,\n 5 listar velhos, 6 para exibir geral" +
-                    "7 remover, 0 para sair:");
+                    "7 remover usuario, 8 para remover relação, 0 para sair:");
             op=scanner.nextInt();
             switch(op){
                 case 1:{
@@ -48,6 +48,9 @@ public class Main {
                     System.out.println("Digite o nome do usuario:");
                     nome=scanner.next();
                     grafo.removerUsuario(nome);
+                    break;
+                } case 8:{
+                    grafo.removerRelacao("", "", true);
                     break;
                 }
                 default:{

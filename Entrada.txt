@@ -2,6 +2,7 @@
 Ana 20
 Lucas 21
 Roberta 28
-2
+3
 Ana Lucas 5
 Roberta Lucas 3
+Ana Roberta 56

@@ -240,21 +240,29 @@ public class Grafo {
 
     }
 
-    public void removerUsuario(String nome) {
+    public void removerUsuario(String nome) {//Está excluindo apenas
         int indice=this.retornaIndice(nome);
+        boolean b=false;
 
-        if(this.verificaExistencia(nome)){
+        if(this.verificaExistencia(nome)){//se exitir o usuario, remove
             //excluindo das estruturas
             this.listaUsuarios.remove(indice);//remove lista principal
             this.listaAD.remove(indice);//remove lista ad junto com os seguidores
             this.listaAVL.remove(indice);//remove listaAVL junto com a arvore de seguidores
 
-            for(int i=0;i<50;i++){
+            //nesse momento é feita a exclusão da linha da matriz corresponde ao usuario excluido, arrastando os demais para a posição do excluido e preenchendo a ultima linha com 0
+            for(int i=0;i<49;i++){
+                if(i==indice) {
+                    b=true;
+                }
                 for(int j=0;j<50;j++){
-                    if(i==indice){
-                        matrizDP[i][indice]=-1;//Como a matriz não é dinamica a estrategia de utilizar o -1 é para diferenciar
+                    if(b){
+                        matrizDP[i][j]=matrizDP[i+1][j];//Como a matriz não é dinamica a estrategia de utilizar o -1 é para diferenciar
                     }
                 }
+            }
+            for(int i=0;i<50;i++){
+                matrizDP[49][i]=0;//preeenche a ultima com 0 pois foi realocada
             }
 
         }else{
@@ -263,7 +271,54 @@ public class Grafo {
 
     }
 
-    public void removerRelacao() {
+    public void removerRelacao(String nome, String nome2, boolean b) {
+        int i ;
+        Scanner scanner=new Scanner(System.in);
+        int indice = this.retornaIndice(nome);
+        int indice2 = this.retornaIndice(nome2);
+
+        if(b){//caso b seja verdadeiro se faz a leitura, caso falso é porque já possuem nomes no parametro
+            //LEITURA DO USUARIO
+            System.out.println("Digite o usuario 1:");
+            nome = scanner.next();
+            System.out.println("Digite o usuario 2:");
+            nome2 = scanner.next();
+        }
+
+        if(this.verificaExistencia(nome) && this.verificaExistencia(nome2)){
+            //é seguidor de
+            for( i=0; i<listaAD.get(indice).size(); i++){
+                if (listaAD.get(indice).get(i).getIndiceUsuario() == indice2){
+                    listaAD.get(indice).remove(i);//remove na lista ad
+                }
+            }
+            //seguido por
+            for( i=0; i<listaAD.get(indice2).size(); i++){
+                if (listaAD.get(indice2).get(i).getIndiceUsuario() == indice){
+                    listaAD.get(indice2).remove(i);//remove na lista ad
+                }
+            }
+            matrizDP[indice][indice2] = 0;//é seguidor de
+            matrizDP[indice2][indice] = 0;//seguido por
+
+            //removendo da AVL
+            Iterator<UsuarioSegue> iterator=this.listaAVL.get(indice).iterator();
+            while(iterator.hasNext()){
+                UsuarioSegue aux=iterator.next();
+                if(aux.getIndiceUsuario()==indice2){//remove a posição do indice
+                    iterator.remove();
+                }
+            }
+            iterator=this.listaAVL.get(indice2).iterator();
+            while(iterator.hasNext()){
+                UsuarioSegue aux=iterator.next();
+                if(aux.getIndiceUsuario()==indice){//remove a posição do indice
+                    iterator.remove();
+                }
+            }
+        } else {
+            System.out.println("Não existe essa relação!");
+        }
 
     }
 
