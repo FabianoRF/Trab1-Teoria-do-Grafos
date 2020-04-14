@@ -33,24 +33,9 @@ public class Grafo {
     }
 
     public void inserirUsuario(Usuario usuario) {//pronto
-        int i;
-        boolean b = true;
-
-        //Verifica se ha o usuario na lista principal, se nao existir emite uma mensagem de erro
-        for (i = 0; i < this.listaUsuarios.size(); i++) {
-            if (usuario.getNome().equals(this.listaUsuarios.get(i).getNome())) {
-                b = false;
-                break;
-            }
-        }
-
-        if (b) { // Se chegar até esse ponto significa que esse usuario não existe na lista ainda.
-            this.listaUsuarios.add(usuario);//Insere o usuario na lista
-            this.listaAD.add(new ArrayList<>());//Cria uma lista dentro da lista AD
-            this.listaAVL.add(new TreeSet<>());//Cria uma arvore dentro da lista AVL
-        } else {
-            System.out.println("ERRO! O usuario já existe na lista!");
-        }
+        this.listaUsuarios.add(usuario);//Insere o usuario na lista
+        this.listaAD.add(new ArrayList<>());//Cria uma lista dentro da lista AD
+        this.listaAVL.add(new TreeSet<>());//Cria uma arvore dentro da lista AVL
     }
 
     public void inserirRelacao() {//pronto
@@ -154,45 +139,49 @@ public class Grafo {
 
         indice=this.retornaIndice(nome);
         //exibindo da listaAD e da Matriz DP
+        if(indice!=-1){
+            //é seguido por:
+            System.out.println("Seguido por:");
+            for(i=0;i<listaAD.size();i++){
+                auxNome=listaUsuarios.get( i ).getNome();//pega o nome do usuario que esta sendo iterado
+                idade=listaUsuarios.get( i ).getIdade();//pega a idade do usuario que esta sendo iterado
+                for(j=0;j<listaAD.get(i).size();j++){
 
-        //é seguido por:
-        System.out.println("Seguido por:");
-        for(i=0;i<listaAD.size();i++){
-            auxNome=listaUsuarios.get( i ).getNome();//pega o nome do usuario que esta sendo iterado
-            idade=listaUsuarios.get( i ).getIdade();//pega a idade do usuario que esta sendo iterado
-            for(j=0;j<listaAD.get(i).size();j++){
 
-
-                if(listaAD.get(i).get(j).getIndiceUsuario() == indice){//verifica se o cod do usuario buscado é seguido por outro(se sim, exibe)
-                    System.out.printf("Nome: %s, idade: %d\n", auxNome, idade);
+                    if(listaAD.get(i).get(j).getIndiceUsuario() == indice){//verifica se o cod do usuario buscado é seguido por outro(se sim, exibe)
+                        System.out.printf("Nome: %s, idade: %d\n", auxNome, idade);
+                    }
                 }
             }
+
+            //segue:
+            if(listaAD.get(indice).size()!=0){//confere se possui seguidores
+                System.out.printf("\nO usuario %s, segue os seguintes usuarios: ", nome);
+                System.out.println("\n*** Exibindo da Lista de Adjacencias e Matriz de Pesos ***\n");
+                for(i=0;i<listaAD.get(indice).size();i++){
+                    //pega o nome e a idade dos usuarios que seguem o usuario pedido
+                    auxNome=listaUsuarios.get(this.listaAD.get(indice).get(i).getIndiceUsuario()).getNome();
+                    idade=listaUsuarios.get(this.listaAD.get(indice).get(i).getIndiceUsuario()).getIdade();
+                    System.out.printf("Nome: %s, idade: %d\n", auxNome, idade);
+                }
+
+                //exibição da arvore avl
+                System.out.println("\n*** Exibindo da Lista de AVL in-ordem ***\n");
+                Iterator<UsuarioSegue> iterator=listaAVL.get(indice).iterator();//cria um iterator que recebe a AVL do usuario em questao
+
+                while(iterator.hasNext()){
+                    indice=iterator.next().getIndiceUsuario();//pega o indice do usuario dentro da AVL
+                    usuarioAux=this.listaUsuarios.get(indice);//pega o usuario que possui aquele indice para depois exibi-lo
+                    System.out.printf("Nome: %s, idade: %d\n", usuarioAux.getNome(), usuarioAux.getIdade());
+                }
+
+            }else{
+                System.out.println("Este usuario não segue ninguém!");
+            }
+        }else {
+            System.out.println("O usuario não existe!");
         }
 
-        //segue:
-        if(listaAD.get(indice).size()!=0){//confere se possui seguidores
-            System.out.printf("\nO usuario %s, segue os seguintes usuarios: ", nome);
-            System.out.println("\n*** Exibindo da Lista de Adjacencias e Matriz de Pesos ***\n");
-            for(i=0;i<listaAD.get(indice).size();i++){
-                //pega o nome e a idade dos usuarios que seguem o usuario pedido
-                auxNome=listaUsuarios.get(this.listaAD.get(indice).get(i).getIndiceUsuario()).getNome();
-                idade=listaUsuarios.get(this.listaAD.get(indice).get(i).getIndiceUsuario()).getIdade();
-                System.out.printf("Nome: %s, idade: %d\n", auxNome, idade);
-            }
-
-            //exibição da arvore avl
-            System.out.println("\n*** Exibindo da Lista de AVL in-ordem ***\n");
-            Iterator<UsuarioSegue> iterator=listaAVL.get(indice).iterator();//cria um iterator que recebe a AVL do usuario em questao
-
-            while(iterator.hasNext()){
-                indice=iterator.next().getIndiceUsuario();//pega o indice do usuario dentro da AVL
-                usuarioAux=this.listaUsuarios.get(indice);//pega o usuario que possui aquele indice para depois exibi-lo
-                System.out.printf("Nome: %s, idade: %d\n", usuarioAux.getNome(), usuarioAux.getIdade());
-            }
-
-        }else{
-            System.out.println("Este usuario não segue ninguém!");
-        }
     }
 
     public void listarSeguidoresVelhos(){
@@ -240,10 +229,18 @@ public class Grafo {
 
     }
 
-    public void removerUsuario(String nome) {//Está excluindo apenas
+    public void removerUsuario(String nome) {//
         int indice=this.retornaIndice(nome);
         boolean b=false;
+        String excluido;
 
+        //primeiro se remove todas suas relações
+        for(int i=0;i<listaAD.get(indice).size();i++){
+            excluido=listaUsuarios.get(listaAD.get(indice).get(i).getIndiceUsuario()).getNome();//armazena o nome de quem o mesmo está relacionado para mandar como parametro no exclui relação
+            this.removerRelacao(nome, excluido, false);//manda false pois não necessitara de leitura na função chamada
+        }
+
+        //depois remove se o usuario
         if(this.verificaExistencia(nome)){//se exitir o usuario, remove
             //excluindo das estruturas
             this.listaUsuarios.remove(indice);//remove lista principal
@@ -271,7 +268,7 @@ public class Grafo {
 
     }
 
-    public void removerRelacao(String nome, String nome2, boolean b) {
+    public void removerRelacao(String nome, String nome2, boolean b) {//pronto
         int i ;
         Scanner scanner=new Scanner(System.in);
 

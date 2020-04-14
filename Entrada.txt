@@ -1,8 +1,13 @@
-3
+6
 Ana 20
 Lucas 21
 Roberta 28
-3
+Leandro 10
+Joao 26
+Roberto 78
+5
 Ana Lucas 5
 Roberta Lucas 3
 Ana Roberta 56
+Ana Joao 3
+Ana Roberto 35
