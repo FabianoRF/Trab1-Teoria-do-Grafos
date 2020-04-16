@@ -146,9 +146,10 @@ public class Grafo {
      */
 
     public void listarSeguidores(String nome) {
-        int indice, i, idade, j;
+        int indice, i, idade, j, tempo;
         String auxNome;
         Usuario usuarioAux;
+        UsuarioSegue usuarioSegueAux;
 
         indice=this.retornaIndice(nome);
         //exibindo da listaAD e da Matriz DP
@@ -158,11 +159,12 @@ public class Grafo {
             for(i=0;i<listaAD.size();i++){
                 auxNome=listaUsuarios.get( i ).getNome();//pega o nome do usuario que esta sendo iterado
                 idade=listaUsuarios.get( i ).getIdade();//pega a idade do usuario que esta sendo iterado
-                for(j=0;j<listaAD.get(i).size();j++){
 
+                for(j=0;j<listaAD.get(i).size();j++){
+                    tempo=listaAD.get(i).get(j).getTempo();
 
                     if(listaAD.get(i).get(j).getIndiceUsuario() == indice){//verifica se o cod do usuario buscado é seguido por outro(se sim, exibe)
-                        System.out.printf("Nome: %s, idade: %d\n", auxNome, idade);
+                        System.out.printf("Nome: %s, idade: %d, seguido por: %d meses.\n", auxNome, idade,tempo );
                     }
                 }
             }
@@ -175,7 +177,8 @@ public class Grafo {
                     //pega o nome e a idade dos usuarios que seguem o usuario pedido
                     auxNome=listaUsuarios.get(this.listaAD.get(indice).get(i).getIndiceUsuario()).getNome();
                     idade=listaUsuarios.get(this.listaAD.get(indice).get(i).getIndiceUsuario()).getIdade();
-                    System.out.printf("Nome: %s, idade: %d\n", auxNome, idade);
+                    tempo=listaAD.get(indice).get(i).getTempo();
+                    System.out.printf("Nome: %s, idade: %d, seguido por: %d meses.\n", auxNome, idade,tempo );
                 }
 
                 //exibição da arvore avl
@@ -183,9 +186,10 @@ public class Grafo {
                 Iterator<UsuarioSegue> iterator=listaAVL.get(indice).iterator();//cria um iterator que recebe a AVL do usuario em questao
 
                 while(iterator.hasNext()){
-                    indice=iterator.next().getIndiceUsuario();//pega o indice do usuario dentro da AVL
-                    usuarioAux=this.listaUsuarios.get(indice);//pega o usuario que possui aquele indice para depois exibi-lo
-                    System.out.printf("Nome: %s, idade: %d\n", usuarioAux.getNome(), usuarioAux.getIdade());
+                    usuarioSegueAux=iterator.next();//pega o indice do usuario dentro da AVL
+                    usuarioAux=this.listaUsuarios.get(usuarioSegueAux.getIndiceUsuario());//pega o usuario que possui aquele indice para depois exibi-lo
+
+                    System.out.printf("Nome: %s, idade: %d, seguido por: %d meses.\n", usuarioAux.getNome(), usuarioAux.getIdade(), usuarioSegueAux.getTempo());
                 }
 
             }else{
@@ -244,6 +248,7 @@ public class Grafo {
         int indice, indice2;//representam os indices Usuarios da relação e tempo de amizade
         UsuarioSegue usuarioSegue = new UsuarioSegue();
         this.exibeUsuarios();//lista os usuarios
+
 
         if(b){
             //LEITURA DO USUARIO
@@ -462,6 +467,7 @@ public class Grafo {
                 System.out.println("O arquivo não possui relações!");
             }
             //FIM RELAÇÕES
+            System.out.println("\nLeitura concluída!\n");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("Erro na leitura do arquivo!");

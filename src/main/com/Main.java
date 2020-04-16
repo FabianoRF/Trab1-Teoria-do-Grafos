@@ -25,7 +25,6 @@ public class Main {
         String nome;
         Grafo grafo=new Grafo();
         grafo.inicializarGrafos();
-        grafo.leitor();
 
         Scanner scanner=new Scanner(System.in);
         System.out.println("------------- TRABALHO PRÁTICO I SOBRE GRAFOS -------------");

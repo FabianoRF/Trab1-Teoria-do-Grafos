@@ -7,7 +7,7 @@ Joao 26
 Roberto 78
 5
 Ana Lucas 5
-Roberta Lucas 3
 Ana Roberta 56
 Ana Joao 3
+Roberta Lucas 3
 Ana Roberto 35
