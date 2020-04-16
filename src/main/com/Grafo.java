@@ -449,7 +449,7 @@ public class Grafo {
             //INICIO LEITURA RELAÇÕES
             linha= lerArq.readLine();//Le a primeira linha para saber o numero de relações do arquivo
 
-            if(!linha.equals("")){//se esta linha conter algum numero significa que haverá inserção de relações
+            if(linha!=null){//se esta linha conter algum numero significa que haverá inserção de relações
                 n=Integer.parseInt(linha);//converte para inteiro
                 String[] auxRelacao;
                 for(int i=0;i<n;i++){
@@ -459,7 +459,7 @@ public class Grafo {
                     this.inserirRelacao(auxRelacao);
                 }
             }else {
-                System.out.println("O arquivo não possui relações");
+                System.out.println("O arquivo não possui relações!");
             }
             //FIM RELAÇÕES
         } catch (FileNotFoundException e) {

@@ -14,6 +14,8 @@ import java.util.Scanner;
  * 4.Dado que este trabalho esta sendo desenvolvido Utilizando a Coleção treeset para a estrutura de lista AVL,
  * não foi possivel implementar os algoritimos de percurso pre-ordem e pós-ordem, apenas o in-ordem,
  * por se tratar de um recurso nativo da linguagem.
+ *
+ * 5.O arquivo de entrada pode ler relações, basta colocar a qtd de linhas e digitar: nomeX nomeY tempoAmizade
  */
 
 public class Main {
