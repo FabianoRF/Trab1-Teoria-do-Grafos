@@ -33,9 +33,18 @@ public class Grafo {
     }
 
     public void inserirUsuario(Usuario usuario) {//pronto
-        this.listaUsuarios.add(usuario);//Insere o usuario na lista
-        this.listaAD.add(new ArrayList<>());//Cria uma lista dentro da lista AD
-        this.listaAVL.add(new TreeSet<>());//Cria uma arvore dentro da lista AVL
+        boolean verif=this.verificaExistencia(usuario.getNome(), usuario.getIdade());
+
+        if(!verif){
+            this.listaUsuarios.add(usuario);//Insere o usuario na lista
+            this.listaAD.add(new ArrayList<>());//Cria uma lista dentro da lista AD
+            this.listaAVL.add(new TreeSet<>());//Cria uma arvore dentro da lista AVL
+        }else{
+            System.out.println("Erro! usuario já existe, digite novamente!\n");
+        }
+
+
+
     }
 
     public void inserirRelacao() {//pronto
@@ -286,19 +295,20 @@ public class Grafo {
         }
     }
 
-    public void removerUsuario(String nome) {//
+    public void removerUsuario(String nome, int idade) {
         int indice=this.retornaIndice(nome);
         boolean b=false;
         String excluido;
 
-        //primeiro se remove todas suas relações
-        for(int i=0;i<listaAD.get(indice).size();i++){
-            excluido=listaUsuarios.get(listaAD.get(indice).get(i).getIndiceUsuario()).getNome();//armazena o nome de quem o mesmo está relacionado para mandar como parametro no exclui relação
-            this.removerRelacao(nome, excluido, false);//manda false pois não necessitara de leitura na função chamada
-        }
+        if(this.verificaExistencia(nome, idade)){//se existir o usuario, remove
+            //primeiro se remove todas suas relações
+            for(int i=0;i<listaAD.get(indice).size();i++){
+                excluido=listaUsuarios.get(listaAD.get(indice).get(i).getIndiceUsuario()).getNome();//armazena o nome de quem o mesmo está relacionado para mandar como parametro no exclui relação
+                this.removerRelacao(nome, excluido, false);//manda false pois não necessitara de leitura na função chamada
+            }
 
-        //depois remove se o usuario
-        if(this.verificaExistencia(nome)){//se exitir o usuario, remove
+            //depois remove se o usuario
+
             //excluindo das estruturas
             this.listaUsuarios.remove(indice);//remove lista principal
             this.listaAD.remove(indice);//remove lista ad junto com os seguidores
@@ -325,7 +335,7 @@ public class Grafo {
 
     }
 
-    public void removerRelacao(String nome, String nome2, boolean b) {//pronto
+    public void removerRelacao(String nome, String nome2, boolean b) {
         int i ;
         Scanner scanner=new Scanner(System.in);
 
@@ -377,7 +387,9 @@ public class Grafo {
         }
 
     }
+    //FIM FUNCOES PEDIDAS
 
+    //INICIO FUNCOES EXTRAS E AUXILIARES
     public int retornaIndice(String nome) {//Metodo que retorna o indice do uisuario OBS: caso não ache ele retorna -1
         int i, indice = -1;
         for (i = 0; i < this.listaUsuarios.size(); i++) {
@@ -397,6 +409,18 @@ public class Grafo {
         }
         return false;
     }
+
+    public boolean verificaExistencia(String nome, int idade){//Metodo que retorna se o o nome está na lista, verificando também a idade para o metodo de inserção
+
+        for(int i=0;i<listaUsuarios.size();i++){
+            if(listaUsuarios.get(i).getNome().equals(nome) && listaUsuarios.get(i).getIdade()==idade){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
     //leitor de txt para ler usuarios e  caso necessario, as relações
     public void leitor(){
@@ -447,10 +471,10 @@ public class Grafo {
         }
     }
 
-    public void exibeUsuarios(){//lista apenas o nome dos usuarios
+    public void exibeUsuarios(){//lista o nome e idade dos usuarios
         System.out.println("Lista de Usuários: ");
         for(int i=0;i<listaUsuarios.size();i++){
-            System.out.println(listaUsuarios.get(i).getNome());
+            System.out.println(listaUsuarios.get(i).getNome() + ", idade: "+ listaUsuarios.get(i).getIdade());
         }
         System.out.println();
     }
@@ -472,9 +496,9 @@ public class Grafo {
         }
 
         System.out.println("Exibindo matriz: \n");
-        for(int i=0;i<50;i++){
+        for(int i=0;i<listaUsuarios.size();i++){//so exibe a parte ocupada da matriz
             System.out.printf("%d: \t", i);
-            for(int j=0;j<50;j++){
+            for(int j=0;j<listaUsuarios.size();j++){
                 System.out.printf("%d\t", matrizDP[i][j]);
             }
             System.out.println();
@@ -490,6 +514,22 @@ public class Grafo {
                 System.out.println(aux.toString() + "\n");
             }
         }
+    }
+
+    public void cadastraUsuario(){//função que insere a partir do terminal
+
+        Usuario usuario = new Usuario();//Cria um novo usuario
+        String nome; int idade;
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Digite o nome do novo usuario:");
+        nome = scanner.next();
+        System.out.println("Digite a idade desse usuario:");
+        idade = scanner.nextInt();
+        usuario.setNome(nome);//Set nome
+        usuario.setIdade(idade);//Set idade
+
+        this.inserirUsuario(usuario);
+
     }
 
 }
